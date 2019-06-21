@@ -20,12 +20,17 @@ out_hint:
     mov ah,9    ; 输出提示
     int 21h
 
+    mov ah,2
     mov dl,[newline_c] ;换行
     int 21h
 
     mov dl,[enter_c] ;回车
     int 21h
     
+    mov dx,offset echo_x
+    mov ah,9
+    int 21h
+
     mov cx,0    ;标记输入了几次
 scan_a_num:     ;输入一个数字
     inc cx
@@ -40,18 +45,14 @@ scan_a_num:     ;输入一个数字
 
     jmp scan_a_num  ;接收下一个字符
 temp:       ;为利用之前的逻辑，这里将al移到x
-    mov dx,offset echo_x
-    mov ah,9
-    int 21h
 
     mov dl,al   ;输出 X=输入的值
     mov ah,2
     int 21h
 
-    sub al,30   ;转换为真实数字
+    sub al,30h   ;转换为真实数字
     mov x,al
     
-
 cal:
     mov al,5            ;5X
     imul x 
