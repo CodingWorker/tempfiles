@@ -45,11 +45,6 @@ scan_a_num:     ;输入一个数字
 
     jmp scan_a_num  ;接收下一个字符
 temp:       ;为利用之前的逻辑，这里将al移到x
-
-    mov dl,al   ;输出 X=输入的值
-    mov ah,2
-    int 21h
-
     sub al,30h   ;转换为真实数字
     mov x,al
     
