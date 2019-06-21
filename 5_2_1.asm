@@ -3,11 +3,11 @@ data segment
     x db ?             ;x初始为空
     y dw ?               ;y初始为空
     cc  db 0ah,0dh,'Y=5X-18=$'    ;换行0ah  回车 0dh
-    hint db '请输入数字:$'
+    hint db 'input a number:$'
     newline_c db 0ah
     enter_c db 0dh
     echo_x db 'X=$'
-    db neg_v 02D    ;短横线ascii值
+    neg_v db 02dh    ;短横线ascii值
 data ends
 code segment 
     assume cs:code,ds:data
@@ -16,7 +16,7 @@ start:
     mov ds,ax
 
 out_hint:
-    mov dx,hint
+    mov dx,offset hint
     mov ah,9    ; 输出提示
     int 21h
 
@@ -37,11 +37,20 @@ scan_a_num:     ;输入一个数字
 
     cmp al,neg_v    ;比对-字符的ascii
     jg temp
-    
+
     jmp scan_a_num  ;接收下一个字符
 temp:       ;为利用之前的逻辑，这里将al移到x
+    mov dx,offset echo_x
+    mov ah,9
+    int 21h
+
+    mov dl,al   ;输出 X=输入的值
+    mov ah,2
+    int 21h
+
     sub al,30   ;转换为真实数字
     mov x,al
+    
 
 cal:
     mov al,5            ;5X
