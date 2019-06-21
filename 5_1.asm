@@ -36,7 +36,7 @@ out1:
 	dec cx
 	cmp cx,0
 	jnz let0
-	mov ah,4c
+	mov ah,4ch
 	int 21
 code ends
 end start
